@@ -1,5 +1,6 @@
 package com.bookpassion.controllers;
 
+import com.bookpassion.models.BookIncome;
 import com.bookpassion.models.Books;
 import com.bookpassion.models.Users;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -153,16 +154,11 @@ public class CartCont extends Main {
             buy[userFromDB.getBuy().length] = id;
         }
 
-        Optional<Books> temp = repoBooks.findById(id);
-        List<Books> books = new ArrayList<>();
-        temp.ifPresent(books::add);
+        BookIncome bookIncome = repoBookIncome.findById(id).orElseThrow();
 
-        for (Books g : books) {
-            g.setCount(g.getCount() + 1);
-            g.setIncome(g.getIncome() + g.getPrice());
-            repoBooks.save(g);
-            break;
-        }
+        bookIncome.setCount(bookIncome.getCount() + 1);
+        bookIncome.setIncome(bookIncome.getIncome() + bookIncome.getPrice());
+        repoBookIncome.save(bookIncome);
 
         userFromDB.setBuy(buy);
 
@@ -193,15 +189,10 @@ public class CartCont extends Main {
                 }
                 for (int j = 0; j < userFromDB.getCart().length; j++) {
                     buy[i] = userFromDB.getCart()[j];
-                    Optional<Books> temp = repoBooks.findById(userFromDB.getCart()[j]);
-                    List<Books> books = new ArrayList<>();
-                    temp.ifPresent(books::add);
-                    for (Books g : books) {
-                        g.setCount(g.getCount() + 1);
-                        g.setIncome(g.getIncome() + g.getPrice());
-                        repoBooks.save(g);
-                        break;
-                    }
+                    BookIncome g = repoBookIncome.findById(userFromDB.getCart()[j]).orElseThrow();
+                    g.setCount(g.getCount() + 1);
+                    g.setIncome(g.getIncome() + g.getPrice());
+                    repoBookIncome.save(g);
                     i++;
                 }
             }

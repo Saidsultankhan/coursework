@@ -31,7 +31,7 @@
                 <div class="input-group">
                     <label for="author" class="input-group-text">Автор</label>
                     <input id="author" name="author" type="text" class="form-control" placeholder="Автор"
-                           required>
+                           th:value="${author}" required readonly>
                 </div>
                 <div class="input-group">
                     <label for="isbn" class="input-group-text">ISBN</label>
@@ -65,6 +65,11 @@
                     <input id="weight" name="weight" type="number" step="0.01" class="form-control"
                            placeholder="Вес" required>
                 </div>
+                <div class="input-group">
+                    <label for="authorid" class="input-group-text" hidden></label>
+                    <input id="authorid" name="authorid" type="number" step="0.01" class="form-control"
+                           th:value="${id}" required hidden>
+                </div>
             </div>
             <div class="col-lg-6 size-150">
                 <div class="input-group">
@@ -84,7 +89,7 @@
                 <textarea class="form-control" name="description" id="description" required></textarea>
             </div>
         </div>
-        <button class="btn btn-lg btn-success" type="submit">Добавить игру</button>
+        <button class="btn btn-lg btn-success" type="submit">Добавить книгу</button>
         <button class="btn btn-lg btn-success" type="reset">Очистить</button>
         <a class="btn btn-lg btn-success" href="/catalog/all">Отмена</a>
     </form>

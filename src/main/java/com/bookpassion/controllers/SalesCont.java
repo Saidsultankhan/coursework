@@ -1,5 +1,6 @@
 package com.bookpassion.controllers;
 
+import com.bookpassion.models.BookIncome;
 import com.bookpassion.models.Books;
 import com.bookpassion.models.Users;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -25,12 +26,14 @@ public class SalesCont extends Main {
             if (userDetail != null) userFromDB = repoUsers.findByUsername(userDetail.getUsername());
         }
 
-        List<Books> books = repoBooks.findAllByUserid(userFromDB.getId());
+        List<BookIncome> bookIncomes = repoBookIncome.findAllByUserid(userFromDB.getId());
         float income = 0;
-        for (Books g : books) income += g.getIncome();
+        for (BookIncome g : bookIncomes) income += g.getIncome();
+
+
 
         model.addAttribute("income", income);
-        model.addAttribute("books", books);
+        model.addAttribute("books", bookIncomes);
         model.addAttribute("role", checkUserRole());
         return "sales";
     }

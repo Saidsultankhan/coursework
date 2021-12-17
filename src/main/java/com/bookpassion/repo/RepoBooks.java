@@ -10,4 +10,5 @@ public interface RepoBooks extends JpaRepository<Books, Long> {
     List<Books> findAllByGenre(Genre genre);
     List<Books> findAllByYear(int year);
     List<Books> findAllByUserid(long userid);
+    List<Books> findAllByAuthorid(long authorid);
 }

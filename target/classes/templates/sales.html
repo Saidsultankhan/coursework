@@ -29,7 +29,7 @@
             <p class="form-control">Выручка</p>
         </div>
         <div th:each="book : ${books}" class="col-lg-12 input-group">
-            <p th:text="${book.name}" class="form-control">Название книги</p>
+            <p th:text="${book.bookname}" class="form-control">Название книги</p>
             <p th:text="${book.count}" class="form-control">Количество проданных книги</p>
             <p th:text="${book.price}" class="form-control">Стоимость одной копии</p>
             <p th:text="${book.income}" class="form-control">Выручка</p>

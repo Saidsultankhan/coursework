@@ -24,21 +24,26 @@ import java.util.UUID;
 @Controller
 public class BookAddEditCont extends Main {
 
-    @GetMapping("/book/add")
-    public String book_add(Model model) {
+    @GetMapping("/book/add/{id}")
+    public String book_add(@PathVariable(value = "id") Long id, Model model) {
+        Author author = repoAuthor.findById(id).orElseThrow();
+
+        model.addAttribute("id", id);
+        model.addAttribute("author", author.getName());
         model.addAttribute("role", checkUserRole());
         return "book_add";
     }
 
     @PostMapping("book/add")
-    public String add(
-            @RequestParam String name, @RequestParam("poster") MultipartFile poster,
-            @RequestParam("screenshots") MultipartFile[] screenshots, @RequestParam String pub,
-            @RequestParam String author, @RequestParam String isbn,
-            @RequestParam int year, @RequestParam float price, @RequestParam float weight, @RequestParam Genre genre,
-            @RequestParam String[] description
+    public String book_add(@RequestParam long authorid,
+                           @RequestParam String name, @RequestParam("poster") MultipartFile poster,
+                           @RequestParam("screenshots") MultipartFile[] screenshots, @RequestParam String pub,
+                           @RequestParam String author, @RequestParam String isbn,
+                           @RequestParam int year, @RequestParam float price, @RequestParam float weight, @RequestParam Genre genre,
+                           @RequestParam String[] description
     ) throws IOException {
-        Books newBooks = new Books(name, author, pub, isbn, year, price, weight, genre);
+        Books newBooks = new Books(name, author, pub, isbn, year, price, weight, genre, authorid);
+        BookIncome newBookIncome = new BookIncome(name, price);
 
         StringBuilder des = new StringBuilder();
         for (String s : description) des.append(s);
@@ -71,10 +76,29 @@ public class BookAddEditCont extends Main {
             if (userDetail != null) {
                 Users userFromDB = repoUsers.findByUsername(userDetail.getUsername());
                 newBooks.setUserid(userFromDB.getId());
+                newBookIncome.setUserid(userFromDB.getId());
             }
         }
 
         repoBooks.save(newBooks);
+
+        long i = returnLastGameId();
+
+        Author ath = repoAuthor.findById(authorid).orElseThrow();
+
+        if (ath.getBooksid() == null) {
+            long[] one = new long[]{i};
+            ath.setBooksid(one);
+        } else {
+            long[] one = new long[ath.getBooksid().length + 1];
+            one[one.length - 1] = i;
+            ath.setBooksid(one);
+        }
+
+        newBookIncome.setBookid(i);
+        repoAuthor.save(ath);
+        repoBookIncome.save(newBookIncome);
+
         return "redirect:/catalog/all";
     }
 
@@ -99,6 +123,7 @@ public class BookAddEditCont extends Main {
             @RequestParam String[] description
     ) throws IOException {
         Books g = repoBooks.findById(id).orElseThrow();
+        BookIncome bookIncome = repoBookIncome.findById(id).orElseThrow();
         StringBuilder des = new StringBuilder();
         for (String s : description) des.append(s);
 
@@ -109,6 +134,7 @@ public class BookAddEditCont extends Main {
         g.setIsbn(isbn);
         g.setYear(year);
         g.setPrice(price);
+        bookIncome.setPrice(price);
         g.setWeight(weight);
         g.setGenre(genre);
         String uuidFile = UUID.randomUUID().toString();
@@ -133,6 +159,7 @@ public class BookAddEditCont extends Main {
             g.setScreenshots(result_screenshots);
         }
 
+        repoBookIncome.save(bookIncome);
         repoBooks.save(g);
         return "redirect:/book/{id}/";
     }
@@ -140,6 +167,8 @@ public class BookAddEditCont extends Main {
     @GetMapping("/book/{id}/delete")
     public String book_delete(@PathVariable(value = "id") Long id) {
         repoBooks.deleteById(id);
+
+        repoBookIncome.deleteById(id);
         List<Users> users = repoUsers.findAll();
 
         for (Users user : users)

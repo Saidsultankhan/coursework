@@ -5,9 +5,11 @@
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/" class="nav-link px-2 text-white"><em>Главная</em></a></li>
                     <li><a href="/catalog/all" class="nav-link px-2 text-white"><em>Каталог</em></a></li>
+                    <li><a href="/authors" class="nav-link px-2 text-white"><em>Авторы</em></a></li>
                     <li><a href="/about" class="nav-link px-2 text-white"><em>О нас</em></a></li>
+
                     <li th:if="${role == 'ADMIN' || role == 'PUB'}">
-                        <a href="/book/add" class="nav-link px-2 text-white"><em>Добавить книгу</em></a>
+                        <a href="/author/add" class="nav-link px-2 text-white"><em>Добавить автора</em></a>
                     </li>
                     <li th:if="${role == 'USER' || role == 'PUB'}">
                         <a href="/cart" class="nav-link px-2 text-white"><em>Корзина</em></a>

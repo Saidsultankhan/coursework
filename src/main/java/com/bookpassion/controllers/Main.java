@@ -1,15 +1,16 @@
 package com.bookpassion.controllers;
 
+import com.bookpassion.models.Books;
 import com.bookpassion.models.Users;
-import com.bookpassion.repo.RepoComments;
-import com.bookpassion.repo.RepoBooks;
-import com.bookpassion.repo.RepoUsers;
+import com.bookpassion.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.List;
 
 public class Main {
 
@@ -22,8 +23,15 @@ public class Main {
     @Autowired
     RepoComments repoComments;
 
+    @Autowired
+    RepoBookIncome repoBookIncome;
+
+    @Autowired
+    RepoAuthor repoAuthor;
+
     @Value("${upload.path}")
     String uploadPath;
+
 
     String checkUserRole() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -36,5 +44,10 @@ public class Main {
             return "NOT";
         }
         return "NOT";
+    }
+
+    long returnLastGameId() {
+        List<Books> booksList = repoBooks.findAll();
+        return booksList.get(booksList.size() - 1).getId();
     }
 }

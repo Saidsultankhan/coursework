@@ -1,5 +1,6 @@
 package com.bookpassion.controllers;
 
+import com.bookpassion.models.BookIncome;
 import com.bookpassion.models.Books;
 import com.bookpassion.models.enums.Role;
 import com.bookpassion.models.Users;
@@ -29,9 +30,9 @@ public class UserListCont extends Main {
             if (userDetail != null) userFromDB = repoUsers.findByUsername(userDetail.getUsername());
         }
 
-        List<Books> books = repoBooks.findAllByUserid(userFromDB.getId());
+        List<BookIncome> books = repoBookIncome.findAllByUserid(userFromDB.getId());
         float income = 0;
-        for (Books g : books) income += g.getIncome();
+        for (BookIncome g : books) income += g.getIncome();
 
         List<Users> users = repoUsers.findAll();
 

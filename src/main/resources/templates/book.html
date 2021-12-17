@@ -45,7 +45,7 @@
                                            th:href="'/catalog/genre/' + ${book.genre}"></a></span>
                 </div>
                 <div><b>Издатель: </b><span th:text="${book.pub}"></span></div>
-                <div><b>Автор: </b><span th:text="${book.author}"></span></div>
+                <div><b>Автор: </b><a th:href="'/author/' + ${book.authorid} + '/'"><span th:text="${book.author}"></span></a></div>
                 <div><b>ISBN: </b><span th:text="${book.isbn}"></span></div>
                 <div><b>Цена: </b><span th:text="${book.price}"></span> $</div>
                 <div><b>Вес: </b><span th:text="${book.weight}"></span></div>

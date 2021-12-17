@@ -15,7 +15,7 @@ public class Books {
     private long id;
 
     private long userid;
-
+    private long authorid;
     private String
             name,
             author,
@@ -32,15 +32,12 @@ public class Books {
 
     private Genre genre;
 
-    private int count;
-    private float income;
-
     public Books() {
     }
 
     public Books(
             String name, String author, String pub, String isbn,
-            int year, float price, float weight, Genre genre
+            int year, float price, float weight, Genre genre, long authorid
     ) {
         this.name = name;
         this.author = author;
@@ -50,6 +47,15 @@ public class Books {
         this.price = price;
         this.weight = weight;
         this.genre = genre;
+        this.authorid = authorid;
+    }
+
+    public long getAuthorid() {
+        return authorid;
+    }
+
+    public void setAuthorid(long authorid) {
+        this.authorid = authorid;
     }
 
     public long getId() {
@@ -126,22 +132,6 @@ public class Books {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public float getIncome() {
-        return income;
-    }
-
-    public void setIncome(float income) {
-        this.income = income;
     }
 
     public String getAuthor() {

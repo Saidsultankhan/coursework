@@ -65,6 +65,8 @@ public class BookCont extends Main {
                 }
         }
 
+
+
         model.addAttribute("books", books);
         model.addAttribute("comments", comments);
         model.addAttribute("role", checkUserRole());
